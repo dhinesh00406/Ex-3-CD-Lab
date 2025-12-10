@@ -1,5 +1,6 @@
-# Ex-3-RECOGNITION-OF-A-VALID-ARITHMETIC-EXPRESSION-THAT-USES-OPERATOR-AND-USING-YACC
-# Date:
+# Exercise - 3
+# RECOGNITION OF A VALID ARITHMETIC EXPRESSION THAT USES OPERATOR AND USING YACC
+
 # AIM
 To write a yacc program to recognize a valid arithmetic expression that uses operator +,- ,* and /.
 # ALGORITHM
@@ -12,58 +13,67 @@ To write a yacc program to recognize a valid arithmetic expression that uses ope
 7.	Compile these with the C compiler as gcc lex.yy.c y.tab.c
 8.	Enter an arithmetic expression as input and the tokens are identified as output.
 # PROGRAM
+cdex3.l
 ```
 %{
-/* This LEX program returns the tokens for the expression */
 #include "y.tab.h"
 %}
+
+digit   [0-9]
 %%
-"=" {printf("\n Operator is EQUAL");}
-"+" {printf("\n Operator is PLUS");}
-"-" {printf("\n Operator is MINUS");}
-"/" {printf("\n Operator is DIVISION");}
-"*" {printf("\n Operator is MULTIPLICATION");}
-[a-zA-Z]*[0-9]* {
-printf("\n Identifier is %s",yytext);
-return ID; }
-. return yytext[0];
-\n return 0;
+[ \t\n]+        ; // Ignore whitespace
+{digit}+        { yylval = atoi(yytext); return NUMBER; }
+[\+\-\*/]       { return *yytext; }
+\(              { return '('; }
+\)              { return ')'; }
+.               { return 0; }
 %%
-int yywrap()
-{
-return 1;
-}
-Program name:ex3.y
+int yywrap() { return 1; }
+```
+cdex3.y
+```
 %{
-#include<stdio.h>
-/* This YACC program is for recognizing the Expression */
+#include <stdio.h>
+#include <stdlib.h>
+void yyerror(const char *s);
+int yylex(void);
 %}
-%token A ID
+
+%token NUMBER
+
 %%
-statement: A'='E
-| E {
-printf("\n Valid arithmetic expression");
-$$=$1;
+expr:   expr '+' term
+        | expr '-' term
+        | term
+        ;
+
+term:   term '*' factor
+        | term '/' factor
+        | factor
+        ;
+
+factor: '(' expr ')'
+        | NUMBER
+        ;
+
+%%
+
+void yyerror(const char *s) {
+    printf("Invalid arithmetic expression.\n");
 }
-;
-E: E'+'ID
-| E'-'ID
-| E'*'ID
-| E'/'ID
-| ID
-;
-%%
-extern FILE*yyin;
-main() {
-do {
-yyparse();
-}while(!feof(yyin)); }
- yyerror(char*s)
-{
+
+int main() {
+    printf("Enter an arithmetic expression: ");
+    if (yyparse() == 0)
+        printf("Valid arithmetic expression.\n");
+    return 0;
 }
 ```
 # OUTPUT
-<img width="632" height="473" alt="377483914-7fac6f6d-5d55-44b7-bb06-cf59a47ffef9" src="https://github.com/user-attachments/assets/192850d3-41b4-4705-be89-988374707d85" />
+cdex3.l
+<img width="955" height="412" alt="489416258-1f67948f-e4da-45ef-bd27-75f3c2c38a7d" src="https://github.com/user-attachments/assets/15c21db7-0b7e-4a56-b230-c1e2d3fbf259" />
+
+<img width="1202" height="366" alt="489426978-79ed3f85-011a-4da7-abdc-3b71c08b4539" src="https://github.com/user-attachments/assets/78b93c20-ff42-4c6c-9beb-767316733346" />
 
 
 # RESULT
