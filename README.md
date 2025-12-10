@@ -70,7 +70,6 @@ int main() {
 }
 ```
 # OUTPUT
-cdex3.l
 <img width="955" height="412" alt="489416258-1f67948f-e4da-45ef-bd27-75f3c2c38a7d" src="https://github.com/user-attachments/assets/15c21db7-0b7e-4a56-b230-c1e2d3fbf259" />
 
 <img width="1202" height="366" alt="489426978-79ed3f85-011a-4da7-abdc-3b71c08b4539" src="https://github.com/user-attachments/assets/78b93c20-ff42-4c6c-9beb-767316733346" />
